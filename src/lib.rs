@@ -1,4 +1,4 @@
-use actix_web::{get, web, App, HttpResponse, Responder, Result};
+use actix_web::{get, web, HttpResponse, Responder, Result};
 use handlers::{
     battles::{
         create_battle::create_battle, delete_battle_by_id::delete_battle_by_id,
@@ -10,17 +10,17 @@ use handlers::{
         update_monster_by_id::update_monster_by_id,
     },
 };
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 
 pub mod config;
 pub mod domain;
 pub mod handlers;
 pub mod infra;
 
-#[derive(Serialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Response {
-    status: String,
-    message: String,
+    pub status: String,
+    pub message: String,
 }
 
 #[get("/healthcheck")]

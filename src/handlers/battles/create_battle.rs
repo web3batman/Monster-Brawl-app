@@ -1,22 +1,15 @@
 use actix_web::{post, web, HttpResponse};
 use chrono::Utc;
-use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 use crate::{
-    domain::models::battle::Battle,
+    domain::models::battle::{Battle, CreateBattleRequest},
     infra::{
         db::database::Database,
         repositories::{battles, monsters},
     },
     Response,
 };
-
-#[derive(Serialize, Deserialize)]
-pub struct CreateBattleRequest {
-    monster_a: Option<String>,
-    monster_b: Option<String>,
-}
 
 #[post("/battles")]
 pub async fn create_battle(

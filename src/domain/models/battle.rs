@@ -26,3 +26,9 @@ pub struct Battle {
     #[serde(rename = "updatedAt")]
     pub updated_at: Option<chrono::NaiveDateTime>,
 }
+
+#[derive(Serialize, Deserialize)]
+pub struct CreateBattleRequest {
+    pub monster_a: Option<String>,
+    pub monster_b: Option<String>,
+}

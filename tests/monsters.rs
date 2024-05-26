@@ -10,6 +10,7 @@ use monster_brawl::{
         update_monster_by_id::update_monster_by_id,
     },
     infra::db::database::Database,
+    Response,
 };
 
 mod utils;
@@ -252,10 +253,10 @@ async fn test_should_fail_when_importing_csv_file_with_inexistent_columns() {
 
     let payload = format!(
         "--{boundary}\r\n\
-        Content-Disposition: form-data; name=\"file\"; filename=\"monsters-wrong-column.csv\"\r\n\
-        Content-Type: text/csv\r\n\r\n\
-        {file_content}\r\n\
-        --{boundary}--\r\n",
+            Content-Disposition: form-data; name=\"file\"; filename=\"monsters-wrong-column.csv\"\r\n\
+            Content-Type: text/csv\r\n\r\n\
+            {file_content}\r\n\
+            --{boundary}--\r\n",
         boundary = boundary,
         file_content = String::from_utf8_lossy(&file_content),
     );
@@ -270,10 +271,15 @@ async fn test_should_fail_when_importing_csv_file_with_inexistent_columns() {
         .to_request();
 
     let resp = test::call_service(&mut app, req).await;
-
     assert_eq!(resp.status(), http::StatusCode::BAD_REQUEST);
+
+    let expected_response = Response {
+        status: "error".to_string(),
+        message: "Incomplete data, check your file.".to_string(),
+    };
+    let expected_body = serde_json::to_string(&expected_response).unwrap();
 
     let body = test::read_body(resp).await;
     let body = String::from_utf8(body.to_vec()).unwrap();
-    assert_eq!(body, "\"Incomplete data, check your file.\"".to_string());
+    assert_eq!(body, expected_body);
 }

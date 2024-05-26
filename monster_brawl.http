@@ -1,0 +1,15 @@
+@hostname = 127.0.0.1
+@port = 8080
+@baseUrl = http://{{hostname}}:{{port}}
+@apiUrl = {{baseUrl}}/api
+@contentType = application/json
+@monsterId = 094c58a0-73a1-44e7-90c0-1d56d019520f
+@battleId = 4dfb6f55-c6ca-4b92-a01b-ad88fc89ccab
+
+### Healthcheck
+
+GET {{baseUrl}}/health HTTP/1.1
+
+### Not found
+
+GET {{baseUrl}}/not-found HTTP/1.1

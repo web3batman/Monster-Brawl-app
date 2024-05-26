@@ -1,5 +1,5 @@
 @hostname = 127.0.0.1
-@port = 8080
+@port = 8000
 @baseUrl = http://{{hostname}}:{{port}}
 @apiUrl = {{baseUrl}}/api
 @contentType = application/json
@@ -8,7 +8,7 @@
 
 ### Healthcheck
 
-GET {{baseUrl}}/health HTTP/1.1
+GET {{baseUrl}}/healthcheck HTTP/1.1
 
 ### Not found
 

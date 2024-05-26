@@ -3,6 +3,7 @@ use actix_web::{post, web, HttpResponse};
 use crate::{
     domain::models::monster::Monster,
     infra::{db::database::Database, repositories::monsters},
+    Response,
 };
 
 #[post("/monsters")]
@@ -13,6 +14,9 @@ pub async fn create_monster(
     let monster = monsters::create_monster(&db, new_monster.into_inner());
     match monster {
         Ok(monster) => HttpResponse::Created().json(monster),
-        Err(err) => HttpResponse::InternalServerError().json(err.to_string()),
+        Err(err) => HttpResponse::InternalServerError().json(Response {
+            status: "error".to_string(),
+            message: err.to_string(),
+        }),
     }
 }

@@ -27,7 +27,10 @@ pub async fn create_battle(
     let monster_b_id = new_battle.monster_b.clone().unwrap();
 
     if monster_a_id == monster_b_id {
-        return HttpResponse::BadRequest().json("Invalid monster parameters.");
+        return HttpResponse::BadRequest().json(Response {
+            status: "error".to_string(),
+            message: "Monsters must be different.".to_string(),
+        });
     }
 
     let monster_a = monsters::get_monster_by_id(&db, &monster_a_id);
@@ -35,12 +38,22 @@ pub async fn create_battle(
 
     let mut monster_a = match monster_a {
         Some(monster) => monster,
-        None => return HttpResponse::NotFound().json("Monster A not found"),
+        None => {
+            return HttpResponse::NotFound().json(Response {
+                status: "error".to_string(),
+                message: "Monster A not found".to_string(),
+            })
+        }
     };
 
     let mut monster_b = match monster_b {
         Some(monster) => monster,
-        None => return HttpResponse::NotFound().json("Monster B not found"),
+        None => {
+            return HttpResponse::NotFound().json(Response {
+                status: "error".to_string(),
+                message: "Monster B not found".to_string(),
+            })
+        }
     };
 
     while monster_a.hp > 0 && monster_b.hp > 0 {
@@ -81,6 +94,9 @@ pub async fn create_battle(
     let battle = battles::create_battle(&db, new_battle);
     match battle {
         Ok(battle) => HttpResponse::Created().json(battle),
-        Err(err) => HttpResponse::InternalServerError().json(err.to_string()),
+        Err(err) => HttpResponse::InternalServerError().json(Response {
+            status: "error".to_string(),
+            message: err.to_string(),
+        }),
     }
 }

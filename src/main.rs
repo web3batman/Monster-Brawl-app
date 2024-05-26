@@ -1,4 +1,12 @@
 use actix_web::{get, web, App, HttpResponse, HttpServer, Responder, Result};
+use handlers::{
+    battles::get_battles::get_battles,
+    monsters::{
+        create_monster::create_monster, delete_monster::delete_monster_by_id,
+        get_monster_by_id::get_monster_by_id, get_monsters::get_monsters, import_csv::import_csv,
+        update_monster::update_monster_by_id,
+    },
+};
 use serde::Serialize;
 
 mod config;
@@ -36,6 +44,16 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .app_data(app_data.clone())
             .service(healthcheck)
+            .service(
+                web::scope("/api")
+                    .service(get_monsters)
+                    .service(create_monster)
+                    .service(get_monster_by_id)
+                    .service(delete_monster_by_id)
+                    .service(update_monster_by_id)
+                    .service(import_csv)
+                    .service(get_battles),
+            )
             .default_service(web::route().to(not_found))
             .wrap(actix_web::middleware::Logger::default())
     })

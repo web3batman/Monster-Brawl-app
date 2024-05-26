@@ -13,6 +13,7 @@ mod config;
 mod domain;
 mod handlers;
 mod infra;
+mod utils;
 
 #[derive(Serialize)]
 pub struct Response {

@@ -9,7 +9,7 @@ pub fn get_battles(db: &Database) -> Vec<Battle> {
     let mut connection = db.get_connection();
     battles
         .load::<Battle>(&mut connection)
-        .expect("error loading all battles")
+        .expect("error getting all battles")
 }
 
 pub fn get_battle_by_id(db: &Database, battle_id: &str) -> Option<Battle> {

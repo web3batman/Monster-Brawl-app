@@ -13,3 +13,77 @@ GET {{baseUrl}}/healthcheck HTTP/1.1
 ### Not found
 
 GET {{baseUrl}}/not-found HTTP/1.1
+
+### Get all monsters
+
+GET {{apiUrl}}/monsters HTTP/1.1
+
+### Get a monster by id
+
+GET {{apiUrl}}/monsters/{{monsterId}} HTTP/1.1
+
+### Create a new monster
+
+POST {{apiUrl}}/monsters HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Monster 1",
+  "image_url": "https://robohash.org/1.png?set=set2&bgset=bg1&size=200x200",
+  "attack": 10,
+  "defense": 10,
+  "hp": 100,
+  "speed": 10
+}
+
+### Delete a monster by id
+
+DELETE {{apiUrl}}/monsters/{{monsterId}} HTTP/1.1
+
+### Update a monster by id
+
+PUT {{apiUrl}}/monsters/{{monsterId}} HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Monster 1",
+  "image_url": "https://robohash.org/1.png?set=set2&bgset=bg1&size=200x200",
+  "attack": 42,
+  "defense": 25,
+  "hp": 99,
+  "speed": 30
+}
+
+### Import monsters from a file (CSV)
+
+POST {{apiUrl}}/monsters/import_csv HTTP/1.1
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="monsters-correct.csv"
+Content-Type: text/csv
+
+< ./src/utils/files/monsters-correct.csv
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+### Get all battles
+
+GET {{apiUrl}}/battles HTTP/1.1
+
+### Get a battle by id
+
+GET {{apiUrl}}/battles/{{battleId}} HTTP/1.1
+
+### Create a new battle
+
+POST {{apiUrl}}/battles HTTP/1.1
+Content-Type: application/json
+
+{
+  "monster_a": "499b0ab4-249a-4e39-a356-89595b201216",
+  "monster_b": "111fbe1e-d65c-4f96-a15e-c65d71c56e60"
+}
+
+### Delete a battle by id
+
+DELETE {{apiUrl}}/battles/{{battleId}} HTTP/1.1

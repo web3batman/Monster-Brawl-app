@@ -6,7 +6,7 @@ use handlers::{
     },
     monsters::{
         create_monster::create_monster, delete_monster_by_id::delete_monster_by_id,
-        get_monster_by_id::get_monster_by_id, get_monsters::get_monsters, import_csv::import_csv,
+        get_monster_by_id::get_monster_by_id, get_monsters::get_monsters, import_monsters_csv::import_monsters_csv,
         update_monster_by_id::update_monster_by_id,
     },
 };
@@ -45,7 +45,7 @@ pub fn config(cfg: &mut web::ServiceConfig) {
             .service(delete_monster_by_id)
             .service(get_monster_by_id)
             .service(get_monsters)
-            .service(import_csv)
+            .service(import_monsters_csv)
             .service(update_monster_by_id)
             .service(create_battle)
             .service(delete_battle_by_id)

@@ -10,8 +10,8 @@ use crate::{
     Response,
 };
 
-#[post("/monsters/import_csv")]
-pub async fn import_csv(
+#[post("/monsters/import_monsters_csv")]
+pub async fn import_monsters_csv(
     db: web::Data<Database>,
     mut payload: Multipart,
 ) -> Result<HttpResponse, Error> {

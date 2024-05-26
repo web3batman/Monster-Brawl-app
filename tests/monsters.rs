@@ -6,8 +6,8 @@ use monster_brawl::{
     domain::models::monster::Monster,
     handlers::monsters::{
         create_monster::create_monster, delete_monster_by_id::delete_monster_by_id,
-        get_monster_by_id::get_monster_by_id, get_monsters::get_monsters, import_csv::import_csv,
-        update_monster_by_id::update_monster_by_id,
+        get_monster_by_id::get_monster_by_id, get_monsters::get_monsters,
+        import_monsters_csv::import_monsters_csv, update_monster_by_id::update_monster_by_id,
     },
     infra::db::database::Database,
     Response,
@@ -205,7 +205,9 @@ async fn test_should_delete_with_404_error_if_monster_does_not_exists() {
 async fn test_should_import_all_the_csv_objects_into_the_database_successfully() {
     let db = Database::new();
 
-    let app = App::new().app_data(Data::new(db)).service(import_csv);
+    let app = App::new()
+        .app_data(Data::new(db))
+        .service(import_monsters_csv);
 
     let mut app = test::init_service(app).await;
 
@@ -225,7 +227,7 @@ async fn test_should_import_all_the_csv_objects_into_the_database_successfully()
     );
 
     let req = test::TestRequest::post()
-        .uri("/monsters/import_csv")
+        .uri("/monsters/import_monsters_csv")
         .insert_header((
             header::CONTENT_TYPE,
             format!("multipart/form-data; boundary={}", boundary),
@@ -242,7 +244,9 @@ async fn test_should_import_all_the_csv_objects_into_the_database_successfully()
 async fn test_should_fail_when_importing_csv_file_with_inexistent_columns() {
     let db = Database::new();
 
-    let app = App::new().app_data(Data::new(db)).service(import_csv);
+    let app = App::new()
+        .app_data(Data::new(db))
+        .service(import_monsters_csv);
 
     let mut app = test::init_service(app).await;
 
@@ -262,7 +266,7 @@ async fn test_should_fail_when_importing_csv_file_with_inexistent_columns() {
     );
 
     let req = test::TestRequest::post()
-        .uri("/monsters/import_csv")
+        .uri("/monsters/import_monsters_csv")
         .insert_header((
             header::CONTENT_TYPE,
             format!("multipart/form-data; boundary={}", boundary),

@@ -1,10 +1,13 @@
 use actix_web::{get, web, App, HttpResponse, HttpServer, Responder, Result};
 use handlers::{
-    battles::get_battles::get_battles,
+    battles::{
+        create_battle::create_battle, delete_battle_by_id::delete_battle_by_id,
+        get_battle_by_id::get_battle_by_id, get_battles::get_battles,
+    },
     monsters::{
-        create_monster::create_monster, delete_monster::delete_monster_by_id,
+        create_monster::create_monster, delete_monster_by_id::delete_monster_by_id,
         get_monster_by_id::get_monster_by_id, get_monsters::get_monsters, import_csv::import_csv,
-        update_monster::update_monster_by_id,
+        update_monster_by_id::update_monster_by_id,
     },
 };
 use serde::Serialize;
@@ -47,12 +50,15 @@ async fn main() -> std::io::Result<()> {
             .service(healthcheck)
             .service(
                 web::scope("/api")
-                    .service(get_monsters)
                     .service(create_monster)
-                    .service(get_monster_by_id)
                     .service(delete_monster_by_id)
-                    .service(update_monster_by_id)
+                    .service(get_monster_by_id)
+                    .service(get_monsters)
                     .service(import_csv)
+                    .service(update_monster_by_id)
+                    .service(create_battle)
+                    .service(delete_battle_by_id)
+                    .service(get_battle_by_id)
                     .service(get_battles),
             )
             .default_service(web::route().to(not_found))

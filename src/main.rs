@@ -3,6 +3,7 @@ use serde::Serialize;
 
 mod config;
 mod domain;
+mod handlers;
 mod infra;
 
 #[derive(Serialize)]
